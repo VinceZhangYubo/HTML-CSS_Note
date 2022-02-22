@@ -139,8 +139,6 @@ localStorage.getItem(key,value)
 ~.key(n) //根据索引值来获取内容
 ```
 
-
-
 **Web 存储的特性**
 
 （1）设置、读取方便。
