@@ -104,6 +104,56 @@ a:link 、a:visited一般一起绑定书写，也可省略在a标签里不用写
 
 - 属性选择器
 
+```text
+^：开头  $：结尾  *：包含
+```
+
+格式：
+
+`E[title]` 选中页面的E元素，并且E存在 title 属性即可。
+
+`E[title="abc"]`选中页面的E元素，并且E需要带有title属性，且属性值**完全等于**abc。
+
+`E[attr~=val]` 
+
+`E[attr|=val]` 
+
+`E[title^="abc"]` 选中页面的E元素，并且E需要带有 title 属性,属性值以 abc 开头。
+
+`E[title$="abc"]` 选中页面的E元素，并且E需要带有 title 属性,属性值以 abc 结尾。
+
+`E[title*="abc"]` 选中页面的E元素，并且E需要带有 title 属性,属性值任意位置包含abc。
+
+- 结构伪类选择器
+
+`E:first-child` 匹配父元素的第一个子元素E。
+
+`E:last-child` 匹配父元素的最后一个子元素E。
+
+`E:nth-child(n)` 匹配父元素的第n个子元素E。**注意**，盒子的编号是从`1`开始算起，不是从`0`开始算起。
+
+`E:nth-child(odd)` 匹配奇数
+
+`E:nth-child(even)` 匹配偶数
+
+`E:nth-last-child(n)` 匹配父元素的倒数第n个子元素E。
+
+注：**父元素指E元素的父元素为参考。且以上选择器中所选到的元素的类型，必须是指定的类型E，如果选不中，则无效。**
+
+- 伪元素选择器
+
+`E::before` 设置在 元素E 前面（依据对象树的逻辑结构）的内容，配合content属性一起使用。
+
+`E::after` 设置在 元素E 后面（依据对象树的逻辑结构）的内容，配合content属性一起使用。
+
+```css
+span::after {
+	content: "永不止步";
+}
+```
+
+可以实现类似`span`的效果，添加的伪元素是行内元素，如果设置宽高需要先转化为block。
+
 ## CSS3继承性、层叠性和优先级
 
 #### 继承性
@@ -163,6 +213,16 @@ border-width:10px;    //边框宽度
 border-style:solid;   //线型
 border-color:red;     //颜色。
 ```
+
+#### 盒子大小box-sizing
+
+外加方式（默认）
+
+`box-sizing: content-box;`：盒子的宽高是内容区域的宽高，改变padding和border不会改变content大小，盒子总宽高改变。
+
+内减模式
+
+`box-sizing: border-box;`：包括padding和border，设置的宽高就是盒子的宽高，改变padding和border会改变content的宽高。
 
 ##  文档流
 
@@ -233,6 +293,10 @@ float: right;
 
 #### 定位
 
+##### 默认static
+
+还是相当于标准流
+
 ##### 相对定位 relative↘
 
 相对于原来位置调整，用于盒子微调。
@@ -286,31 +350,109 @@ div {
 
 用途：右下角的“返回到顶部”；顶端固定的导航条
 
-##### z-index
+##### 粘性定位sticky
+
+相对定位和固定定位的结合，主要用于对scroll事件的监听。对移动端兼容不好。
+
+在滑动过程中，某个元素距离其父元素的距离达到sticky粘性定位的要求时(比如`top：100px`) ，`position: sticky`这时的效果相当于fixed定位，固定到屏幕适当位置。
+
+```css
+.div {
+	position: sticky;
+	top: 100px;
+}
+```
+
+- 父元素不能`overflow:hidden`或者`overflow:auto`属性。
+
+- 必须指定top、bottom、left、right4个值之一，否则只会处于相对定位
+
+- 父元素的高度不能低于sticky元素的高度
+
+- sticky元素仅在其父元素内生效
+
+##### z-index的层叠规则⭐️
 
 - 只有定位了的元素才能使用，没有z-index，定位的元素压住没有定位的元素，而定位的元素中默认代码越靠下越显示在页面前面
 - z-index从0开始没有单位，越大越显示在页面前面
 - 层级从父：z-index of A > z-index of B, then even z-index of a < z-index of b, a在b前面
 
-- static
-- sticky
+**CSS样式案列讲解和处理技巧细节：**[09-CSS案例讲解：博雅互动 | 千古前端图文教程 (qianguyihao.com)](https://web.qianguyihao.com/02-CSS基础/09-CSS案例讲解：博雅互动.html#内容区域的制作)
 
-- ⭐️ 层叠规则
+## CSS3
+
+#### 边框圆角和边框阴影
+
+边框圆角
+
+```css
+border-radius: 50% //圆
+border-radius: 10% //圆角矩形
+```
+
+边框阴影
+
+```css
+box-shadow: 水平偏移 垂直偏移 模糊程度（不能为负） 阴影大小 阴影颜色 inset（内阴影，不写默认外）
+
+box-shadow: 15px 21px 48px -2px #666;
+```
+
+#### 动画、过渡和渐变
+
+动画：[12-CSS3属性详解：动画详解 | 千古前端图文教程 (qianguyihao.com)](https://web.qianguyihao.com/02-CSS基础/12-CSS3属性详解：动画详解.html#前言)
+
+#### 字体
+
+替换字体、伪元素插入图标等：[14-CSS3属性详解：Web字体 | 千古前端图文教程 (qianguyihao.com)](https://web.qianguyihao.com/02-CSS基础/14-CSS3属性详解：Web字体.html#前言)
+
+## Flex布局
+
+`display: flex;`
+
+Flex布局优势：flex布局的子元素不会脱离文档流，不会像浮动一样涉及各种BFC、清除浮动等；
+
+Flex布局劣势：不支持IE9及以下版本，所以面对海量用户的大型网站还不能尝试。
+
+#### 弹性布局
+
+- **弹性盒子**：指的是使用 `display:flex` 或 `display:inline-flex` 声明的**父容器**。
+
+  **子元素/弹性元素**：指的是父容器里面的子元素们（父容器被声明为 flex 盒子的情况下）
+
+- 默认**主轴**从左向右，**侧轴**从上向下。`flex-direction`设置子元素排列方向。
+
+```css
+flex-direction: row; //默认
+flex-direction: column; //从上到下
+flex-direction: row-reverse; //横向反向
+flex-direction: column-reverse; //纵向反向
+```
+
+- `flex-wrap: wrap/nowrap`控制子元素溢出时换行处理
+
+- `justify-content`控制子元素在主轴上的排列方式
+
+  - `flex-start` 从主轴的起点对齐（默认值）
+  - `flex-end` 从主轴的终点对齐
+  - `center` 居中对齐
+  - `space-around` 在父盒子里平分
+  - `space-between` 两端对齐边界 平分
+
+  <img src="C:\Users\yubo.zhang\Desktop\微信截图_20220317164453.png" alt="微信截图_20220317164453" style="zoom:60%;" />
+
+- `align-items`侧轴对齐方式
+
+![20190821_2101](C:\Users\yubo.zhang\Desktop\20190821_2101.png)
+
+
+
 - ❗ BFC 和 IFC 机制
-- CSS3
   - ⭐️ 响应式布局
     - 媒体查询
     - Flex 布局
     - Grid 布局
     - 瀑布流
-  - 动画
-  - 过渡
-  - 渐变
-  - 背景
-  - 边框
-  - 圆角
-  - 字体
-  - 2D / 3D 转换
 
 ## 浏览器的兼容性问题
 
@@ -359,6 +501,23 @@ IE6留了一个**后门**：只要给CSS属性之前，加上**下划线**，这
 ```css
 height: 10px;
 _font-size:0;
+```
+
+#### 私有前缀
+
+适配不同浏览器
+
+```css
+ -webkit-: 谷歌 苹果
+ -moz-:火狐
+ -ms-：IE
+ -o-：欧朋
+
+background: -webkit-linear-gradient(left, green, yellow);
+background: -moz-linear-gradient(left, green, yellow);
+background: -ms-linear-gradient(left, green, yellow);
+background: -o-linear-gradient(left, green, yellow);
+background: linear-gradient(left, green, yellow);
 ```
 
 #### 渐进增强和优雅降级
