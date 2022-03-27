@@ -532,3 +532,4 @@ background: linear-gradient(left, green, yellow);
 - [渐进增强和优雅降级之间的不同（面试题目）](https://www.cnblogs.com/iceflorence/archive/2017/03/27/6625466.html)
 
 选择哪种开发方式主要取决于客户端的用户主要是哪种类型，如果年轻人居多，客户端版本高占比高就选择优雅降级方式；反之，低版本客户端占比高，为了保证内容显示优先，选择渐进增强的方式。
+
