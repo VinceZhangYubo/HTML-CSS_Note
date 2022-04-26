@@ -398,13 +398,57 @@ box-shadow: 水平偏移 垂直偏移 模糊程度（不能为负） 阴影大�
 box-shadow: 15px 21px 48px -2px #666;
 ```
 
+css3常见边框[17-CSS3的常见边框汇总 | 千古前端图文教程 (qianguyihao.com)](https://web.qianguyihao.com/02-CSS基础/17-CSS3的常见边框汇总.html#爱心)
+
 #### 动画、过渡和渐变
 
 动画：[12-CSS3属性详解：动画详解 | 千古前端图文教程 (qianguyihao.com)](https://web.qianguyihao.com/02-CSS基础/12-CSS3属性详解：动画详解.html#前言)
 
 #### 字体
 
-替换字体、伪元素插入图标等：[14-CSS3属性详解：Web字体 | 千古前端图文教程 (qianguyihao.com)](https://web.qianguyihao.com/02-CSS基础/14-CSS3属性详解：Web字体.html#前言)
+替换字体、伪元素插入图标等：[Web字体 ](https://web.qianguyihao.com/02-CSS基础/14-CSS3属性详解：Web字体.html#前言)
+
+##### 字体粗细
+
+`font-weight`属性可填100-900，normal值400，bold值700。
+
+[Windows/Mac/IOS/Android平台的默认字体加粗效果](https://web.qianguyihao.com/03-CSS进阶/03-网页设计和开发中，关于字体的常识.html#各大平台的默认字体加粗效果)
+
+##### 文字换行
+
+- overflow-wrap：通用的属性。用来说明当一个不能被分开的字符串（单词）太长而不能填充其包裹盒时，为防止其溢出，浏览器是否允许这样的单词**中断换行**。
+- word-break：指定了怎样在单词内断行。这里涉及到CJK（中文/日文/韩文）的文字换行。
+- white-space：空白处是否换行。
+
+上面这三个 CSS 属性进行组合，可以设置各种不同的属性。
+
+当然，如果想让一段很长的文本不换行，可以直接设置`white-space: nowrap` 这一个属性即可。如果想换行，可以试试`white-space: pre-wrap`。
+
+## 常见的布局方法
+
+- **table 表格布局**：早期使用的布局，如今用得很少。
+- **float 浮动 + margin**：为了兼容低版本的IE浏览器，很多网站（比如腾讯新闻、网易新闻、淘宝等）都会采用 float 布局，涉及到 BFC 和清除浮动（面试重点）。
+- **inline-block 布局**：对外的表现是行内元素（不会独占一行），对内的表现是块级元素（可以设置宽高）。
+- **flex 布局**：为布局而生，非常灵活，是最为推荐的布局写法。
+- **响应式布局**：移动端用的较多。
+
+#### inline-block布局
+
+`display: inline-block;`
+
+像文本一样去排列 block 元素，没有清除浮动等问题，但需要处理间隙问题。
+
+<img src="https://gitee.com/yubobrian/picture/raw/master/inline-block.png" style="zoom:60%;" />
+
+为了去掉这个间隙，可以有几种解决办法：
+
+办法1：设置父元素`container`的字体大小为0，即`font-size: 0`，然后设置子元素 `div1`、`div2`的字体`font-size: 12px`。
+
+办法2：在写法上，去掉`div1`和`div2`之间的换行。改为：
+
+```html
+<div class="div1">div1的inline-block 属性</div><div class="div2">div2的inline-block 属性</div>
+```
 
 ## Flex布局
 
@@ -532,4 +576,67 @@ background: linear-gradient(left, green, yellow);
 - [渐进增强和优雅降级之间的不同（面试题目）](https://www.cnblogs.com/iceflorence/archive/2017/03/27/6625466.html)
 
 选择哪种开发方式主要取决于客户端的用户主要是哪种类型，如果年轻人居多，客户端版本高占比高就选择优雅降级方式；反之，低版本客户端占比高，为了保证内容显示优先，选择渐进增强的方式。
+
+## ⭐如何让一个元素水平垂直居中？⭐
+
+#### 行内元素
+
+- 水平居中：给父容器设置`text-align: center;`
+
+- 垂直居中：让**文字的行高** 等于 **盒子的高度**，可以让单行文本垂直居中。
+
+```css
+.father {
+	height: 20px;
+	line-height: 20px;
+}
+```
+
+#### 块级元素
+
+- 方法1：绝对定位+margin（需要指定子元素高度，不推荐）
+
+先让子元素由左上角移到中心，此时元素左上角在中心点，通过margin回移子元素一半的长宽，将子元素水平垂直居中。
+
+```css
+.son {
+	position: absolute;
+    width: 200px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+}
+```
+
+- 方法2：绝对定位+translate（无需指定子元素宽高，推荐）
+
+```css
+.son {
+    position: absolute;
+    background: red;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+```
+
+- 方法3：flex布局+margin: auto （推荐）
+
+子元素son1在父元素中水平垂直居中，且不影响其他子元素。
+
+```css
+.father {
+	display: flex;
+	min-height: 500px;
+}
+.son1 {
+	margin: auto;
+}
+```
+
+## ⭐CSS面试中可能出现需要搞懂的问题⭐
+
+[CSS问题](https://web.qianguyihao.com/03-CSS进阶/00-准备.html#前言)
 
